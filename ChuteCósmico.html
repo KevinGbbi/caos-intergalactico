@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caos Intergaláctico de Baixaria 3.1</title>
+    <style>
+        body {
+            background: repeating-linear-gradient(45deg, #ff00ff, #00ff00 20px, #ffff00 40px, #ff0000 60px);
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Impact', sans-serif;
+            position: relative;
+        }
+        .botao {
+            padding: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 4px dashed #ffff00;
+            text-align: center;
+            position: absolute;
+        }
+        .botao:hover {
+            transform: rotate(360deg) scale(1.2);
+        }
+        #perna-btn {
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #00ffff;
+            color: #ff0000;
+        }
+        #insulto-btn {
+            top: 60%;
+            left: 30%;
+            background-color: #ff00ff;
+            color: #00ff00;
+        }
+        #xingamento-btn {
+            top: 60%;
+            left: 70%;
+            background-color: #ffff00;
+            color: #ff00ff;
+        }
+        #misterio-btn {
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ff0000;
+            color: #00ffff;
+        }
+        #mensagem {
+            position: absolute;
+            color: #ffffff;
+            font-size: 30px;
+            text-shadow: 3px 3px #ff00ff;
+            animation: girar 1s infinite;
+        }
+        .flutuante {
+            position: absolute;
+            color: #00ffff;
+            font-size: 20px;
+            text-shadow: 2px 2px #ff0000;
+            animation: flutuar 3s linear;
+        }
+        @keyframes girar {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes flutuar {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+        .estrela {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ffff00;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: cair 2s linear;
+        }
+        @keyframes cair {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+        #relogio-troll {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        #hora-input {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #00ff00;
+            color: #ff0000;
+            border: 3px solid #ff00ff;
+            width: 80px;
+        }
+        #hora-btn {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ff0000;
+            color: #00ffff;
+            border: none;
+            cursor: pointer;
+        }
+        #buscador {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        #busca-input {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ff00ff;
+            color: #ffffff;
+            border: 3px solid #00ff00;
+        }
+        #busca-btn {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffff00;
+            color: #ff0000;
+            border: none;
+            cursor: pointer;
+        }
+        #resultado-busca {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            color: #000000;
+            font-size: 24px;
+            font-family: 'Creepster', cursive;
+            text-shadow: 1px 1px #ffffff;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="perna-btn" class="botao" onclick="chutar()">🦵 CHUTE AQUI 🦵</div>
+    <div id="insulto-btn" class="botao" onclick="insultar()">INSULTO PESADO</div>
+    <div id="xingamento-btn" class="botao" onclick="xingar()">XINGAR FEIO</div>
+    <div id="misterio-btn" class="botao" onclick="misterio()">BOTÃO MISTÉRIO</div>
+    <div id="mensagem"></div>
+    <div id="relogio-troll">
+        <input type="text" id="hora-input" placeholder="HH:MM">
+        <button id="hora-btn" onclick="verificarHora()">QUE HORAS SÃO?</button>
+    </div>
+    <div id="buscador">
+        <input type="text" id="busca-input" placeholder="Busque algo inútil">
+        <button id="busca-btn" onclick="buscar()">Buscar</button>
+    </div>
+    <div id="resultado-busca"></div>
+
+    <script>
+        // Efeitos aleatórios globais
+        function efeitoCaotico(btn) {
+            const sons = [
+                "https://www.myinstants.com/media/sounds/ratinho.mp3", // UÊÊÊ
+                "https://www.myinstants.com/media/sounds/risada-maligna.mp3", // Risada maligna
+                "https://www.myinstants.com/media/sounds/errou.mp3", // Errou
+                "https://www.myinstants.com/media/sounds/tapa-na-cara.mp3", // Tapa
+                "https://www.myinstants.com/media/sounds/ahhh.mp3", // Grito
+                "https://www.myinstants.com/media/sounds/esse-e-meu-patrao.mp3", // Esse é meu patrão
+                "https://www.myinstants.com/media/sounds/pare.mp3", // PARE
+                "https://www.myinstants.com/media/sounds/musica-tosca.mp3", // Música tosca (exemplo genérico)
+                "https://www.myinstants.com/media/sounds/vai-toma-no-cu.mp3", // Vai tomar no cu
+                "https://www.myinstants.com/media/sounds/burro.mp3" // Burro
+            ];
+            const audio = new Audio(sons[Math.floor(Math.random() * sons.length)]);
+            audio.play().catch(() => console.log("Som bloqueado, ignora!"));
+
+            for (let i = 0; i < Math.floor(Math.random() * 20) + 5; i++) {
+                const estrela = document.createElement("div");
+                estrela.className = "estrela";
+                estrela.style.left = `${Math.random() * 100}%`;
+                estrela.style.backgroundColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+                document.body.appendChild(estrela);
+                setTimeout(() => estrela.remove(), 2000);
+            }
+
+            btn.style.animation = "tremer 0.1s infinite";
+            setTimeout(() => btn.style.animation = "", 500);
+            btn.style.backgroundColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+
+            if (Math.random() < 0.3) {
+                document.body.style.animation = "piscar 0.2s infinite";
+                setTimeout(() => document.body.style.animation = "", 1000);
+            } else if (Math.random() < 0.5) {
+                const flutuante = document.createElement("div");
+                flutuante.className = "flutuante";
+                flutuante.innerText = ["OPS!", "ERRO!", "BOOM!", "HAHA!", "PATÃO!", "TOSCO!"][Math.floor(Math.random() * 6)];
+                flutuante.style.left = `${Math.random() * 80 + 10}%`;
+                flutuante.style.top = `${Math.random() * 80 + 10}%`;
+                document.body.appendChild(flutuante);
+                setTimeout(() => flutuante.remove(), 3000);
+            }
+        }
+
+        // Relógio Troll
+        function verificarHora() {
+            const input = document.getElementById("hora-input").value;
+            const agora = new Date();
+            const horaReal = `${agora.getHours().toString().padStart(2, '0')}:${agora.getMinutes().toString().padStart(2, '0')}`;
+            const msgDiv = document.getElementById("mensagem");
+
+            if (input === horaReal) {
+                const elogios = [
+                    "PARABÉNS, SEU GÊNIO TOSCO, SÃO " + horaReal + "!",
+                    "ACERTOU, SEU NERD FEDIDO, SÃO " + horaReal + "!",
+                    "MANDOU BEM, SEU LIXO, SÃO " + horaReal + "!",
+                    "ATÉ QUE ENFIM, SEU BURRO, SÃO " + horaReal + "!"
+                ];
+                msgDiv.innerText = elogios[Math.floor(Math.random() * elogios.length)];
+                const audio = new Audio("https://www.myinstants.com/media/sounds/esse-e-meu-patrao.mp3");
+                audio.play().catch(() => {});
+            } else {
+                const xingamentos = [
+                    "ERROU, SEU FILHO DA PUTA, OLHA NO CELULAR!",
+                    "SEU CUZÃO, NÃO SABE NEM VER HORA, VAI SE FODER!",
+                    "QUE MERDA, SEU IDIOTA, CONFERE O HORÁRIO!",
+                    "SEU BOSTA, ERROU FEIO, OLHA AS HORAS DIREITO!",
+                    "VAI TOMAR NO CU, SEU LIXO, ACERTA ISSO AÍ!",
+                    "SEU PUTO BURRO, NÃO SABE NADA, OLHA O CELULAR!",
+                    "ERROU, SEU CARALHO, VAI APRENDER A VER HORA!"
+                ];
+                msgDiv.innerText = xingamentos[Math.floor(Math.random() * xingamentos.length)];
+                const audio = new Audio("https://www.myinstants.com/media/sounds/pare.mp3");
+                audio.play().catch(() => {});
+            }
+
+            msgDiv.style.top = `${Math.random() * 80 + 10}%`;
+            msgDiv.style.left = `${Math.random() * 80 + 10}%`;
+            efeitoCaotico(document.getElementById("hora-btn"));
+            document.getElementById("hora-input").value = "";
+        }
+
+        // Chute no vazio
+        function chutar() {
+            const mensagens = [
+                "CHUTOU O NADA E O NADA TE DEU UM COICE!",
+                "A BOLA VIROU MINGAU NO CU DO ESPAÇO!",
+                "SEU CHUTE É TÃO RUIM QUE O VAZIO TE CUSPIU!",
+                "VOCÊ ACERTOU O PRÓPRIO SACO, SEU ANIMAL!",
+                "O COSMOS TE CHAMOU DE 'PÉ DE MERDA'!",
+                "CHUTE FRACO, ATÉ O BURACO NEGRO TE ZOOU!",
+                "A BOLA EXPLODIU NO TEU RABO, HAHA!",
+                "VOCÊ CHUTOU E O UNIVERSO TE DEU O MEIO!",
+                "O VAZIO TE OLHOU E DISSE 'QUE PORCARIA!'",
+                "SEU CHUTE FOI PRA PUTA QUE PARIU O CAOS!"
+            ];
+            const msg = mensagens[Math.floor(Math.random() * mensagens.length)];
+            const msgDiv = document.getElementById("mensagem");
+            msgDiv.innerText = msg;
+            msgDiv.style.top = `${Math.random() * 80 + 10}%`;
+            msgDiv.style.left = `${Math.random() * 80 + 10}%`;
+            efeitoCaotico(document.getElementById("perna-btn"));
+        }
+
+        // Insultos pesados
+        function insultar() {
+            const insultos = [
+                "SEU FILHO DUMA ÉGUA COM CHIFRE DE BOSTA!",
+                "VOCÊ É UM LIXO QUE NEM O LIXO QUER!",
+                "SEU CRETINO COM CARA DE CU DE GAMBÁ!",
+                "IDIOTA FEDORENTO COM DENTE DE PIRANHA!",
+                "SEU TRAPO HUMANO COM BAFO DE ESGOTO!",
+                "VOCÊ É UMA MERDA QUE NEM CACHORRO COME!",
+                "SEU PORCO SUJO COM RABO DE RATO!",
+                "OTÁRIO COM CÉREBRO DE AMEBA PODRE!",
+                "SEU INÚTIL COM CHEIRO DE CHULÉ DE DEFUNTO!",
+                "VOCÊ É UM NADA COM CARA DE TUDO RUIM!"
+            ];
+            const msg = insultos[Math.floor(Math.random() * insultos.length)];
+            const msgDiv = document.getElementById("mensagem");
+            msgDiv.innerText = msg;
+            msgDiv.style.top = `${Math.random() * 80 + 10}%`;
+            msgDiv.style.left = `${Math.random() * 80 + 10}%`;
+            efeitoCaotico(document.getElementById("insulto-btn"));
+        }
+
+        // Xingamentos de baixo calão
+        function xingar() {
+            const xingamentos = [
+                "VAI TOMAR NO CU, SEU VIADO IMUNDO!",
+                "SEU CUZÃO COM BOCA DE MERDA!",
+                "FODE-TE, SEU CARALHO PODRE!",
+                "SEU FILHO DA PUTA COM RABO SOLTO!",
+                "VAI SE FODER, SEU PICA NOJENTA!",
+                "SEU BOSTA COM PREGAS FROUXAS!",
+                "COME MERDA, SEU SACO MURCHO!",
+                "SEU PUTO COM CU ARROMBADO!",
+                "VAI CHUPAR ROLA, SEU LIXO HUMANO!",
+                "SEU CARALHO COM CHEIRO DE MIJO!"
+            ];
+            const msg = xingamentos[Math.floor(Math.random() * xingamentos.length)];
+            const msgDiv = document.getElementById("mensagem");
+            msgDiv.innerText = msg;
+            msgDiv.style.top = `${Math.random() * 80 + 10}%`;
+            msgDiv.style.left = `${Math.random() * 80 + 10}%`;
+            efeitoCaotico(document.getElementById("xingamento-btn"));
+        }
+
+        // Botão Mistério
+        function misterio() {
+            const acoes = [
+                () => { document.getElementById("mensagem").innerText = "VOCÊ LIBEROU O DEMÔNIO DO CAOS!"; },
+                () => { for (let i = 0; i < 50; i++) { 
+                    const estrela = document.createElement("div"); 
+                    estrela.className = "estrela"; 
+                    estrela.style.left = `${Math.random() * 100}%`; 
+                    document.body.appendChild(estrela); 
+                    setTimeout(() => estrela.remove(), 2000); 
+                } },
+                () => { document.body.style.transform = "rotate(180deg)"; setTimeout(() => document.body.style.transform = "", 2000); },
+                () => { const audio = new Audio("https://www.myinstants.com/media/sounds/vai-toma-no-cu.mp3"); audio.play().catch(() => {}); },
+                () => { document.getElementById("mensagem").innerText = "ERRO 404: TEU CÉREBRO NÃO FOI ENCONTRADO!"; },
+                () => { document.body.style.background = "#000"; setTimeout(() => document.body.style.background = "", 1000); },
+                () => { const audio = new Audio("https://www.myinstants.com/media/sounds/musica-tosca.mp3"); audio.play().catch(() => {}); }
+            ];
+            const msgDiv = document.getElementById("mensagem");
+            msgDiv.style.top = `${Math.random() * 80 + 10}%`;
+            msgDiv.style.left = `${Math.random() * 80 + 10}%`;
+            acoes[Math.floor(Math.random() * acoes.length)]();
+            efeitoCaotico(document.getElementById("misterio-btn"));
+        }
+
+        // Buscador inútil
+        function buscar() {
+            const input = document.getElementById("busca-input").value;
+            if (input.trim() === "") return;
+            const respostasBusca = [
+                "ENCONTRAMOS: NADA, SEU IDIOTA!",
+                "RESULTADO: UM CU NO LUGAR DO TEU CÉREBRO!",
+                "BUSCA FALHOU, IGUAL TUA VIDA!",
+                "ACHAMOS: TEU RABO NA LUA, PARABÉNS!",
+                "VOCÊ PROCUROU MERDA E ACHOU VOCÊ MESMO!",
+                "RESULTADO: O VAZIO TE MANDOU UM BEIJO!",
+                "ENCONTRAMOS: TEU PAI NO LIXO!",
+                "BUSCA INÚTIL, IGUAL TEU ROSTO!",
+                "ACHAMOS: TEU CU PISCANDO PRO NADA!",
+                "NENHUM RESULTADO, SÓ TEU FRACASSO!"
+            ];
+            const resposta = respostasBusca[Math.floor(Math.random() * respostasBusca.length)];
+            document.getElementById("resultado-busca").innerText = resposta;
+            document.getElementById("busca-input").value = "";
+            efeitoCaotico(document.getElementById("busca-btn"));
+        }
+
+        // Animações extras
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes tremer {
+                0% { transform: translate(-50%, -50%) translateX(0); }
+                25% { transform: translate(-50%, -50%) translateX(-5px); }
+                50% { transform: translate(-50%, -50%) translateX(5px); }
+                75% { transform: translate(-50%, -50%) translateX(-5px); }
+                100% { transform: translate(-50%, -50%) translateX(0); }
+            }
+            @keyframes piscar {
+                0% { opacity: 1; }
+                50% { opacity: 0; }
+                100% { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
